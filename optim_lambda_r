@@ -1,0 +1,35 @@
+This function takes in the following arguments:
+
+q: a vector of length N_0 containing the values of q_j
+C: a matrix of size R x N_0 containing the values of c_{rj}(X_{jl})
+m: a vector of length R containing the values of m_r
+X: a 3D array of size R x N_0 x L containing the values of X_{jl}
+R: the number of rows in C and X
+
+It returns a vector of length R containing the optimal values of lambda_r.
+
+Note that this function assumes that the variables l and N_0 are defined in the global environment.
+
+optim_lambda_r <- function(q, C, m, X, R){
+  # Define the objective function
+  obj <- function(lambda){
+    # Compute the first term of the objective function
+    first_term <- (1 - q[l]) * log(sum(q * exp(-colSums(C * X[,l,drop=FALSE]))))
+    
+    # Compute the second term of the objective function
+    second_term <- sum(lambda * m)
+    
+    # Return the sum of the two terms
+    return(first_term + second_term)
+  }
+  
+  # Initialize the starting point for the optimization
+  lambda0 <- rep(0, R)
+  
+  # Solve the unrestricted dual problem using nlm
+  result <- nlm(obj, lambda0)
+  
+  # Return the optimal values of lambda
+  return(result$estimate)
+}
+
