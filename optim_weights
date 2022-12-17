@@ -9,7 +9,7 @@ N_0: the number of columns in C and X
 
 It returns a vector of length N_0 containing the optimal values of w_j.
 
-optim_weights <- function(optim_lambda_r, q, C, X, l, N_0){
+optim_weights <- function(lambda, q, C, X, l, N_0){
   # Compute the numerator of the expression for w
   numerator <- q[l] * exp(-colSums(C * X[,l,drop=FALSE]))
   
