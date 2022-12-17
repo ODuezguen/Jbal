@@ -1,0 +1,23 @@
+This function takes in the following arguments:
+
+lambda: a vector of length R containing the optimal values of lambda_r
+q: a vector of length N_0 containing the values of q_j
+C: a matrix of size R x N_0 containing the values of c_{rj}(X_{jl})
+X: a 3D array of size R x N_0 x L containing the values of X_{jl}
+l: an integer indicating the index of the element in q and X that corresponds to the current value of l
+N_0: the number of columns in C and X
+
+It returns a vector of length N_0 containing the optimal values of w_j.
+
+optim_weights <- function(optim_lambda_r, q, C, X, l, N_0){
+  # Compute the numerator of the expression for w
+  numerator <- q[l] * exp(-colSums(C * X[,l,drop=FALSE]))
+  
+  # Compute the denominator of the expression for w
+  denominator <- sum(q * exp(-colSums(C * X[,l,drop=FALSE])))
+  
+  # Compute the optimal values of w
+  w <- numerator / denominator
+  
+  return(w)
+}
