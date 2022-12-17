@@ -4,14 +4,15 @@ q: a vector of length N_0 containing the values of q_j
 C: a matrix of size R x N_0 containing the values of c_{rj}(X_{jl})
 m: a vector of length R containing the values of m_r
 X: a 3D array of size R x N_0 x L containing the values of X_{jl}
-R: the number of rows in C and X
+l: an integer indicating the index of the element in q and X that corresponds to the current value of l
+N_0: the number of columns in C and X
 
-It returns a vector of length R containing the optimal values of lambda_r.
+It returns a vector of length N_0 containing the optimal values of w_j.
 
-Note that this function assumes that the variables l and N_0 are defined in the global environment.
+Note that this function assumes that the variable R is defined in the global environment.
 
-optim_lambda_r <- function(q, C, m, X, R){
-  # Define the objective function
+optim_lambda_and_weights <- function(q, C, m, X, l, N_0){
+  # Define the objective function for the unrestricted dual problem
   obj <- function(lambda){
     # Compute the first term of the objective function
     first_term <- (1 - q[l]) * log(sum(q * exp(-colSums(C * X[,l,drop=FALSE]))))
@@ -26,10 +27,28 @@ optim_lambda_r <- function(q, C, m, X, R){
   # Initialize the starting point for the optimization
   lambda0 <- rep(0, R)
   
+  # Add a debugging statement to print the starting point for the optimization
+  trace("before optimization", quote(lambda0))
+  
   # Solve the unrestricted dual problem using nlm
   result <- nlm(obj, lambda0)
   
-  # Return the optimal values of lambda
-  return(result$estimate)
+  # Add a debugging statement to print the result of the optimization
+  trace("after optimization", quote(result))
+  
+  # Extract the optimal values of lambda
+  lambda <- result$estimate
+  
+  # Add a debugging statement to print the optimal values of lambda
+  trace("optimal lambda", quote(lambda))
+  
+  # Compute the optimal values of w
+  w <- optim_weights(lambda, q, C, X, l, N_0)
+  
+  # Add a debugging statement to print the optimal values of w
+  trace("optimal w", quote(w))
+  
+  # Return the optimal values of w
+  return(w)
 }
 
