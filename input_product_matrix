@@ -2,7 +2,7 @@
 #' plus additional columns containing all possible products of pairs of values from the original columns. 
 #' The new columns are added only for columns that have more than two unique values in the original matrix.
 
-input_cross_matrix <- function(input_matrix) {
+input_product_matrix <- function(input_matrix) {
   # Calculate the product of the input matrix and its transpose
   product_matrix <- input_matrix %*% t(input_matrix)
   
