@@ -8,6 +8,7 @@
 
 # Define the optimization function
 optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
+  
   # Pre-allocate memory for the coefficients
   lambda <- rep(0, ncol(co.x))
   
