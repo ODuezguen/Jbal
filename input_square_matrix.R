@@ -8,13 +8,11 @@ input_square_matrix <- function(input_matrix) {
   
   # Calculate the squares of the values in the identified columns
   square_matrix <- input_matrix[, indices]^2
-  
   # Set the column names of the square matrix to the names of the original columns with ".2" appended
   colnames(square_matrix) <- paste0(colnames(input_matrix)[indices], "^2")
   
   # Combine the input matrix with the square matrix
   out <- cbind(input_matrix, square_matrix)
   
-  # Return the resulting matrix
   return(out)
 }
