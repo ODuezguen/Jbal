@@ -1,6 +1,6 @@
-This function takes a matrix as input and returns a new matrix that has all of the original columns 
-plus additional columns containing all possible products of pairs of values from the original columns. 
-The new columns are added only for columns that have more than two unique values in the original matrix.
+#' This function takes a matrix as input and returns a new matrix that has all of the original columns 
+#' plus additional columns containing all possible products of pairs of values from the original columns. 
+#' The new columns are added only for columns that have more than two unique values in the original matrix.
 
 input_cross_matrix <- function(input_matrix) {
   # Calculate the product of the input matrix and its transpose
