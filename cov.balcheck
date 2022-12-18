@@ -1,10 +1,9 @@
 #' Calculate the balance of covariates before and after matching
 #'
 #' This function takes three arguments:
-#' @param matchbal_output A list containing data about the results of the entropy balancing method before and after matching
-#' @param variable_names A character vector of the names of the variables being analyzed
-#' @param after_matching A logical value indicating whether to use the data from before or after matching. 
-#' If TRUE, the data from AfterMatching will be used. If FALSE, the data from BeforeMatching will be used. The default value is TRUE.
+#' @param matchbal_output: A list containing data about the results of the entropy balancing method before and after matching.
+#' @param variable_names: A character vector of the names of the variables being analyzed.
+#' @param after_matching: A logical value indicating whether to use the data from before or after matching. 
 #'
 #' The function returns a matrix with the balance statistics for the specified variables.
 #' @return A matrix containing the mean treatment, mean control, standard deviation difference, standard deviation difference pooled, 
