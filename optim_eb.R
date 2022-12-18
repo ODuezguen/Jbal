@@ -6,9 +6,8 @@
 #' base.weight: A scalar value used to compute the weights.
 #' control: A list of control parameters for the L-BFGS-B optimizer, such as the maximum number of iterations or the tolerance for convergence.
 
-# Define the optimization function
+
 optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
-  
   # Pre-allocate memory for the coefficients
   lambda <- rep(0, ncol(co.x))
   
@@ -37,6 +36,5 @@ optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
   converged <- max(abs(co.x.agg - tr.total)) < control$constraint.tolerance
   if(converged){cat("Converged within tolerance \n")}
   
-  # Return the results as a list
   return(list(maxdiff=max(abs(co.x.agg - tr.total)), coefs=lambda, weights.ebal=weights, converged=converged))
 }
