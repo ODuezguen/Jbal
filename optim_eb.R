@@ -6,22 +6,23 @@
 #' base.weight: A scalar value used to compute the weights.
 #' control: A list of control parameters for the L-BFGS-B optimizer, such as the maximum number of iterations or the tolerance for convergence.
 
-# Define the function to be minimized
-loss_fun <- function(coefs, tr.total, co.x, base.weight) {
-  # Compute the weights
-  weights <- exp(co.x %*% coefs) * base.weight
-  # Aggregate the values in co.x
-  co.x.agg <- t(weights) %*% co.x
-  # Compute the deviation from the target values
-  deviation <- co.x.agg - tr.total
-  # Return the sum of squared deviations as the loss function
-  return(sum(deviation^2))
-}
-
 # Define the optimization function
 optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
   # Pre-allocate memory for the coefficients
   coefs <- rep(0, ncol(co.x))
+  
+  # Define the function to be minimized
+  loss_fun <- function(coefs) {
+    # Compute the weights
+    weights <- exp(co.x %*% coefs) * base.weight
+    # Aggregate the values in co.x
+    co.x.agg <- t(weights) %*% co.x
+    # Compute the deviation from the target values
+    deviation <- co.x.agg - tr.total
+    # Return the sum of squared deviations as the loss function
+    return(sum(deviation^2))
+  }
+  
   # Use L-BFGS-B to minimize the loss function
   result <- optim(par=coefs, fn=loss_fun, tr.total=tr.total, co.x=co.x, base.weight=base.weight,
                   method="L-BFGS-B", control=list(maxit=1000, reltol=1e-6))
