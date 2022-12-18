@@ -1,6 +1,6 @@
-This function takes a matrix as input and returns a new matrix that has all of the original columns 
-plus additional columns containing the squares of the values in the original columns. 
-The new columns are added only for columns that have more than two unique values in the original matrix.
+#' This function takes a matrix as input and returns a new matrix that has all of the original columns 
+#' plus additional columns containing the squares of the values in the original columns. 
+#' The new columns are added only for columns that have more than two unique values in the original matrix.
 
 input_square_matrix <- function(input_matrix) {
   # Identify the columns of the input matrix that have more than two unique values
