@@ -9,12 +9,12 @@
 # Define the optimization function
 optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
   # Pre-allocate memory for the coefficients
-  coefs <- rep(0, ncol(co.x))
+  lambda <- rep(0, ncol(co.x))
   
   # Define the function to be minimized
-  loss_fun <- function(coefs) {
+  loss_fun <- function(lambda) {
     # Compute the weights
-    weights <- exp(co.x %*% coefs) * base.weight
+    weights <- exp(co.x %*% lambda) * base.weight
     # Aggregate the values in co.x
     co.x.agg <- t(weights) %*% co.x
     # Compute the deviation from the target values
@@ -24,17 +24,17 @@ optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
   }
   
   # Use L-BFGS-B to minimize the loss function
-  result <- optim(par=coefs, fn=loss_fun, tr.total=tr.total, co.x=co.x, base.weight=base.weight,
+  result <- optim(par=lambda, fn=loss_fun, tr.total=tr.total, co.x=co.x, base.weight=base.weight,
                   method="L-BFGS-B", control=list(maxit=1000, reltol=1e-6))
   # Compute the final weights
   weights <- exp(co.x %*% result$par) * base.weight
   # Extract the optimized coefficients, final weights, and loss from the result
-  coefs <- result$coefs
+  lambda <- result$lambda
   weights <- result$weights
   loss <- result$loss
   # Check if the optimization converged within the tolerance
   converged <- max(abs(co.x.agg - tr.total)) < control$constraint.tolerance
   if(converged){cat("Converged within tolerance \n")}
   # Return the results as a list
-  return(list(maxdiff=max(abs(co.x.agg - tr.total)), coefs=coefs, weights.ebal=weights, converged=converged))
+  return(list(maxdiff=max(abs(co.x.agg - tr.total)), coefs=lambda, weights.ebal=weights, converged=converged))
 }
