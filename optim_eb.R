@@ -35,6 +35,7 @@ optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
   # Check if the optimization converged within the tolerance
   converged <- max(abs(co.x.agg - tr.total)) < control$constraint.tolerance
   if(converged){cat("Converged within tolerance \n")}
+  
   # Return the results as a list
   return(list(maxdiff=max(abs(co.x.agg - tr.total)), coefs=lambda, weights.ebal=weights, converged=converged))
 }
