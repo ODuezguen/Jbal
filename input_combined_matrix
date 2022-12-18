@@ -16,7 +16,7 @@ input_combined_matrix <- function(input_matrix) {
   # Calculate the squares of the values in the identified columns
   square_matrix <- input_matrix[, indices]^2
   
-  # Set the column names of the square matrix to the names of the original columns with ".2" appended
+  # Set the column names of the square matrix to the names of the original columns with "^2" appended
   colnames(square_matrix) <- paste0(colnames(input_matrix)[indices], "^2")
   
   # Combine the product matrix and the square matrix
