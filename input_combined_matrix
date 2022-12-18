@@ -1,6 +1,6 @@
-This function takes a matrix as input and returns a new matrix that has all of the original columns 
-plus additional columns containing all possible products of pairs of values from the original columns 
-as well as the squares of the values.
+#' This function takes a matrix as input and returns a new matrix that has all of the original columns 
+#' plus additional columns containing all possible products of pairs of values from the original columns 
+#' as well as the squares of the values.
 
 input_combined_matrix <- function(input_matrix) {
   # Identify the columns of the input matrix that have more than two unique values
