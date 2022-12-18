@@ -19,12 +19,12 @@ loss_fun <- function(coefs, tr.total, co.x, base.weight) {
 }
 
 # Define the optimization function
-optim_eb <- function(tr.total, co.x, base.weight, control=list(maxit=100, reltol=1e-6)) {
+optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
   # Pre-allocate memory for the coefficients
   coefs <- rep(0, ncol(co.x))
   # Use L-BFGS-B to minimize the loss function
   result <- optim(par=coefs, fn=loss_fun, tr.total=tr.total, co.x=co.x, base.weight=base.weight,
-                  method="L-BFGS-B", control=control)
+                  method="L-BFGS-B", control=list(maxit=1000, reltol=1e-6))
   # Compute the final weights
   weights <- exp(co.x %*% result$par) * base.weight
   # Extract the optimized coefficients, final weights, and loss from the result
