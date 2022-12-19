@@ -7,7 +7,7 @@
 #' control: A list of control parameters for the L-BFGS-B optimizer, such as the maximum number of iterations or the tolerance for convergence.
 
 
-optim_eb <- function(tr.total, co.x, base.weight, control=list()) {
+optim_Jbal <- function(tr.total, co.x, base.weight, control=list()) {
   # Pre-allocate memory for the coefficients
   lambda <- rep(0, ncol(co.x))
   
