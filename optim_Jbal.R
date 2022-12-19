@@ -69,7 +69,7 @@ optim_Jbal <- function(tr.total, co.x, base.weight, control=list()) {
     stop("Final weights must sum to 1")
   }
   
-  # Extract the optimized coefficients, final weights, and loss from the result
+  # Extracting the optimized coefficients, final weights, and loss from the result
   lambda <- result$lambda
   weights <- result$weights
   loss <- result$loss
