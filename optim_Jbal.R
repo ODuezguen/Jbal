@@ -1,4 +1,4 @@
-#' This code uses the L-BFGS-B optimization algorithm to implement entropy balancing, as proposed by Hainmueller (2012).
+#' This code uses the L-BFGS-B optimization algorithm to implement entropy balancing (currently the one proposed by Hainmueller (2012)).
 #'
 #' The function takes the following input arguments:
 #' tr.total: A vector of target values.
