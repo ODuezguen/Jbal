@@ -13,7 +13,7 @@ cov.specifier <- function(cov_matrix,
       stop("Error: Covariate matrix must be a numeric matrix.")
     }
     if (nrow(cov_matrix) < 2) {
-      stop("Error: covariate matrix must have at least 2 rows.")
+      stop("Error: Covariate matrix must have at least 2 rows.")
     }
 
   if (method == "crossproduct) {
