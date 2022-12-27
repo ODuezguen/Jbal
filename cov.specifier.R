@@ -16,9 +16,9 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
   if (nrow(cov_matrix) < 2) {
     stop("Error: Covariate matrix must have at least 2 rows.")
   }
-  
+    
+  # Function 1: Calculate cross product matrix
   if (method == "crossproduct") {
-    # Function 1: Calculate cross product matrix
     # Calculating the cross product of the covariate matrix and its transpose
     tryCatch({
       product_matrix <- cov_matrix %*% t(cov_matrix)
@@ -37,8 +37,8 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     })
     return(out)
     
+  # Function 2: Calculate square matrix
   } else if (method == "square") {
-    # Function 2: Calculate square matrix
     # Identifying the columns of the covariate matrix that have more than two unique values
     indices <- which(sapply(cov_matrix, function(x) length(unique(x)) > 2))
     # Calculating the squares of the values in the identified columns
@@ -52,9 +52,9 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
       stop("Error: An error occurred while attempting to bind cov_matrix and square_matrix:", e)
     })
     return(out)
-    
+
+  # Function 3: Calculate combined matrix
   } else if (method == "combined") {
-    # Function 3: Calculate combined matrix
     # Identifying the columns of the covariate matrix that have more than two unique values
     indices <- which(sapply(cov_matrix, function(x) length(unique(x)) > 2))
   
@@ -87,8 +87,8 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     out <- cbind(cov_matrix, combined_matrix)
     return(out)
     
+  # Handling invalid options
   } else {
-    # Handling invalid options
     stop("Invalid option")
   }
 }
