@@ -87,8 +87,8 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     out <- cbind(cov_matrix, combined_matrix)
     return(out)
     
-    } else {
+  } else {
     # Handling invalid options
     stop("Invalid option")
-    }
   }
+}
