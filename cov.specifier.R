@@ -2,7 +2,8 @@
 #' plus additional columns containing all possible products of pairs of values ("crossproduct") from the original columns 
 #' as well as the squares of the values ("square") or the combination of both ("combined"). Default is "crossproduct".
 #'
-#' The new columns are added only for columns that have more than two unique values in the original matrix.
+#' It includes additional checks and error handling, 
+#' e.g. the new columns are added only for columns that have more than two unique values in the original matrix.
 #'
 #' @author Onur Düzgün
 
