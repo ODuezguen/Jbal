@@ -16,7 +16,7 @@ cov.specifier <- function(cov_matrix,
       stop("Error: Covariate matrix must have at least 2 rows.")
     }
 
-  if (method == "crossproduct) {
+  if (method == "crossproduct") {
     # Function 1: Calculate cross product matrix
     # Calculating the cross product of the covariate matrix and its transpose
     tryCatch({
