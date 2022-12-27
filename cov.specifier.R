@@ -7,8 +7,7 @@
 #'
 #' @author Onur Düzgün
 
-cov.specifier <- function(cov_matrix, 
-                          method = "crossproduct") {
+cov.specifier <- function(cov_matrix, method = "crossproduct") {
     # Adding some checks
     if (!is.matrix(cov_matrix) || !is.numeric(cov_matrix)) {
       stop("Error: Covariate matrix must be a numeric matrix.")
