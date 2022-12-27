@@ -9,14 +9,14 @@
 
 cov.specifier <- function(cov_matrix, method = "crossproduct") {
     
-    # Adding some checks
-    if (!is.matrix(cov_matrix) || !is.numeric(cov_matrix)) {
-      stop("Error: Covariate matrix must be a numeric matrix.")
-    }
-    if (nrow(cov_matrix) < 2) {
-      stop("Error: Covariate matrix must have at least 2 rows.")
-    }
-
+  # Adding some checks
+  if (!is.matrix(cov_matrix) || !is.numeric(cov_matrix)) {
+    stop("Error: Covariate matrix must be a numeric matrix.")
+  }
+  if (nrow(cov_matrix) < 2) {
+    stop("Error: Covariate matrix must have at least 2 rows.")
+  }
+  
   if (method == "crossproduct") {
     # Function 1: Calculate cross product matrix
     # Calculating the cross product of the covariate matrix and its transpose
