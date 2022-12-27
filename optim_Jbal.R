@@ -5,6 +5,8 @@
 #' co.x: A matrix of values used to compute the weights in the optimization procedure.
 #' base.weight: A scalar value used to compute the weights.
 #' control: A list of control parameters for the L-BFGS-B optimizer, such as the maximum number of iterations or the tolerance for convergence.
+#'
+#' @author Onur Düzgün
 
 optim_Jbal <- function(tr.total, co.x, base.weight, control=list()) {
   
