@@ -8,6 +8,8 @@
 #' The function returns a matrix with the balance statistics for the specified variables.
 #' @return A matrix containing the mean treatment, mean control, standard deviation difference, standard deviation difference pooled, 
 #' variance ratio, T p-value, KS p-value, mean difference, median difference, and maximum difference for each variable.
+#'
+#' @author Onur Düzgün
 
 
 cov.balcheck <- function(matchbal_output, variable_names, after_matching = TRUE) {
