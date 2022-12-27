@@ -1,7 +1,7 @@
-#' Calculate the balance of covariates before and after matching
+#' Display the summary statistics of covariates before and after matching.
 #'
 #' This function takes three arguments:
-#' @param matchbal_output: A list containing data about the results of the entropy balancing method before and after matching.
+#' @param matchbal_output: A list containing data about the results of the MatchBalance() function before and after matching.
 #' @param variable_names: A character vector of the names of the variables being analyzed.
 #' @param after_matching: A logical value indicating whether to use the data from before or after matching. 
 #'
