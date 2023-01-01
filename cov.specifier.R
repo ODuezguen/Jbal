@@ -3,7 +3,7 @@
 #' as well as the squares of the values ("square") or the combination of both ("combined"). Default is "crossproduct".
 #'
 #' It includes additional checks and error handling, 
-#' e.g. the new columns are added only for columns that have more than two unique values in the original matrix.
+#' e.g new columns are added only for columns that have more than two unique values in the original matrix.
 #'
 #' @author Onur Düzgün
 
@@ -19,17 +19,16 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     
   # Option 1: Calculate cross product matrix
   if (method == "crossproduct") {
-    # Calculating the cross product of the covariate matrix and its transpose
     tryCatch({
       product_matrix <- cov_matrix %*% t(cov_matrix)
     }, error = function(e) {
       stop("Error: An error occurred while attempting to calculate the cross product of the covariate matrix and its transpose:", e)
     })
-    # Selecting the lower triangular elements of the product matrix
+    # Selecting lower triangular elements of the product matrix
     lower_tri <- lower.tri(product_matrix)
     product_matrix <- product_matrix[lower_tri]
 
-    # Combining the input matrix with the lower triangular elements of the product matrix
+    # Combining input matrix with the lower triangular elements of the product matrix
     tryCatch({
       out <- cbind(cov_matrix, product_matrix)
     }, error = function(e) {
@@ -39,13 +38,13 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     
   # Option 2: Calculate square matrix
   } else if (method == "square") {
-    # Identifying the columns of the covariate matrix that have more than two unique values
+    # Identifying columns of the covariate matrix that have more than two unique values
     indices <- which(sapply(cov_matrix, function(x) length(unique(x)) > 2))
-    # Calculating the squares of the values in the identified columns
+    # Calculating squares of the values in the identified columns
     square_matrix <- cov_matrix[, indices]^2
     colnames(square_matrix) <- paste0(colnames(cov_matrix)[indices], "^2")
 
-    # Combining the input matrix with the square matrix
+    # Combining input matrix with square matrix
     tryCatch({
       out <- cbind(cov_matrix, square_matrix)
     }, error = function(e) {
@@ -55,7 +54,7 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
 
   # Option 3: Calculate combined matrix
   } else if (method == "combined") {
-    # Identifying the columns of the covariate matrix that have more than two unique values
+    # Identifying columns of the covariate matrix that have more than two unique values
     indices <- which(sapply(cov_matrix, function(x) length(unique(x)) > 2))
   
     # Calculating the cross product of the covariate matrix and its transpose
@@ -64,11 +63,11 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     }, error = function(e) {
       stop("Error: An error occurred while attempting to calculate the cross product of the covariate matrix and its transpose:", e)
     })                       
-    # Selecting only the lower triangular elements of the cross product matrix
+    # Selecting only lower triangular elements of the cross product matrix
     lower_tri <- lower.tri(product_matrix)
     product_matrix <- product_matrix[lower_tri]
     
-    # Calculating the squares of the values in the identified columns
+    # Calculating squares of the values in the identified columns
     square_matrix <- cov_matrix[, indices]^2
     colnames(square_matrix) <- paste0(colnames(cov_matrix)[indices], "^2")
   
@@ -87,7 +86,7 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     out <- cbind(cov_matrix, combined_matrix)
     return(out)
     
-  # Handling invalid options
+  # Lastly, handling invalid options
   } else {
     stop("Invalid option")
   }
