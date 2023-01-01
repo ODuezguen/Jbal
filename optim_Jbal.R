@@ -1,11 +1,13 @@
 #' This code uses the L-BFGS-B optimization algorithm to implement entropy balancing (currently the one proposed by Hainmueller (2012)).
 #'
 #' The function takes the following input arguments:
-#' tr.total: A vector of target values.
-#' co.x: A matrix of values used to compute the weights in the optimization procedure.
-#' base.weight: A scalar value used to compute the weights.
-#' control: A list of control parameters for the L-BFGS-B optimizer, such as the maximum number of iterations or the tolerance for convergence.
+#' @params tr.total: A vector of target values.
+#' @params co.x: A matrix of values used to compute the weights in the optimization procedure.
+#' @params base.weight: A scalar value used to compute the weights.
+#' @params control: A list of control parameters for the L-BFGS-B optimizer, such as the maximum number of iterations or tolerance for convergence.
 #'
+#' @return It returns optimized coefficients, final weights, and the loss.
+#' 
 #' @author Onur Düzgün
 
 optim_Jbal <- function(tr.total, co.x, base.weight, control=list()) {
