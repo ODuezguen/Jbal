@@ -43,13 +43,14 @@ optim_Jbal <- function(tr.total, co.x, base.weight, control=list()) {
   
   # Defining the function to be minimized
   loss_fun <- function(lambda) {
-    # Compute the weights
+    # Computing weights
     weights <- exp(co.x %*% lambda) * base.weight
-    # Aggregate the values in co.x
+    # Aggregating values in co.x
     co.x.agg <- t(weights) %*% co.x
-    # Compute the deviation from the target values
+    # Computing deviations from target values
     deviation <- co.x.agg - tr.total
-    # Return the sum of squared deviations as the loss function
+    # Returning sum of squared deviations as the loss function 
+    # (UPCOMING: User may specify other options such as RMSE, MAE or correlation coefficient)
     return(sum(deviation^2))
   }
   
@@ -73,7 +74,7 @@ optim_Jbal <- function(tr.total, co.x, base.weight, control=list()) {
     stop("Final weights must sum to 1")
   }
   
-  # Extracting the optimized coefficients, final weights, and loss from the result
+  # Extracting optimized coefficients, final weights, and the loss
   lambda <- result$lambda
   weights <- result$weights
   loss <- result$loss
