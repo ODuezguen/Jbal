@@ -87,6 +87,7 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     # Combining the original matrix with the new matrices
     out <- cbind(cov_matrix, product_matrix, cov_matrix.sq)
     colnames(out)[(ncol(cov_matrix)+ncol(product_matrix)):ncol(out)] <- cov_matrix.sq.names
+    return(out)
     
   # Lastly, handling invalid options
   } else {
