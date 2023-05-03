@@ -1,5 +1,5 @@
 #' This function takes a matrix as input and returns a new matrix that has all of the original columns 
-#' plus additional columns containing all possible products of pairs of values ("crossproduct") from the original columns 
+#' plus additional columns containing the product of each combination of columns ("crossproduct") from the original columns 
 #' as well as the squares of the values ("square") or the combination of both ("combined"). Default is "crossproduct".
 #'
 #' It includes additional checks and error handling, 
@@ -9,82 +9,84 @@
 
 cov.specifier <- function(cov_matrix, method = "crossproduct") {
     
-  # Adding some checks
-  if (!is.matrix(cov_matrix) || !is.numeric(cov_matrix)) {
-    stop("Error: Covariate matrix must be a numeric matrix.")
+  # Input validation
+  if (!is.matrix(cov_matrix) || nrow(cov_matrix) == 0 || ncol(cov_matrix) == 0) {
+    stop("Input must be a non-empty matrix")
+  }
+  if (any(!is.numeric(cov_matrix))) {
+    stop("Covariate matrix must contain only numeric values")
+  }
+  if (length(unique(colnames(cov_matrix))) != ncol(cov_matrix)) {
+    stop("Covariate matrix must have unique column names")
   }
   if (nrow(cov_matrix) < 2) {
-    stop("Error: Covariate matrix must have at least 2 rows.")
+    stop("Covariate matrix must have at least two rows")
+  }
+  if (any(is.na(cov_matrix))) {
+    stop("Covariate matrix must not contain missing values")
+  }
+  if (any(apply(cov_matrix, 2, var) == 0)) {
+    stop("Covariate matrix must not have zero variance columns")
   }
     
-  # Option 1: Calculate cross product matrix
+  # Option 1: Returns original matrix and cross product matrix
   if (method == "crossproduct") {
-    tryCatch({
-      product_matrix <- cov_matrix %*% t(cov_matrix)
-    }, error = function(e) {
-      stop("Error: An error occurred while attempting to calculate the cross product of the covariate matrix and its transpose:", e)
-    })
-    # Selecting lower triangular elements of the product matrix
-    lower_tri <- lower.tri(product_matrix)
-    product_matrix <- product_matrix[lower_tri]
-
-    # Combining input matrix with the lower triangular elements of the product matrix
-    tryCatch({
-      out <- cbind(cov_matrix, product_matrix)
-    }, error = function(e) {
-      stop("Error: An error occurred while attempting to bind cov_matrix and product_matrix:", e)
-    })
-    return(out)
+    # Calculating the product matrix of each combination of columns
+    k <- ncol(cov_matrix)
+    n <- nrow(cov_matrix)
+    product_matrix <- matrix(NA, n, (k*(k+1))/2 + 1)
+    colnames(product_matrix)[((k*(k+1))/2 + 1)] <- "dummy"
+    if (n * k > .Machine$integer.max) {
+       stop("Output matrix is too large to be computed")
+       }
+    count <- 1
+    for (i in 1:(k-1)) {
+        product_matrix[,count:(count+k-i-1)] <- outer(cov_matrix[,i], cov_matrix[, (i+1):k])
+        colnames(product_matrix)[count:(count+k-i-1)] <- paste0(colnames(cov_matrix)[i], ".", colnames(cov_matrix)[(i+1):k])
+        count <- count + k - i
+        }
+     
+    # Combining the original matrix with the new matrix
+    out <- cbind(cov_matrix, product_matrix)
+    return(out)   
     
-  # Option 2: Calculate square matrix
+  # Option 2: Returns original matrix and squares of each column
   } else if (method == "square") {
-    # Identifying columns of the covariate matrix that have more than two unique values
-    indices <- which(sapply(cov_matrix, function(x) length(unique(x)) > 2))
-    # Calculating squares of the values in the identified columns
-    square_matrix <- cov_matrix[, indices]^2
-    colnames(square_matrix) <- paste0(colnames(cov_matrix)[indices], "^2")
-
-    # Combining input matrix with square matrix
-    tryCatch({
-      out <- cbind(cov_matrix, square_matrix)
-    }, error = function(e) {
-      stop("Error: An error occurred while attempting to bind cov_matrix and square_matrix:", e)
-    })
+    # Adding squared terms to output matrix
+    cov_matrix.sq <- apply(cov_matrix, 2, function(x) if (length(unique(x)) > 1) x^2 else NULL)
+    cov_matrix.sq <- cov_matrix.sq[, !is.null(cov_matrix.sq)]
+    cov_matrix.sq.names <- paste0(colnames(cov_matrix.sq), "^2")
+   
+    # Combining the original matrix with the new matrix
+    out <- cbind(cov_matrix, cov_matrix.sq)
+    colnames(out)[(ncol(cov_matrix)+1):ncol(out)] <- cov_matrix.sq.names
     return(out)
 
   # Option 3: Calculate combined matrix
   } else if (method == "combined") {
-    # Identifying columns of the covariate matrix that have more than two unique values
-    indices <- which(sapply(cov_matrix, function(x) length(unique(x)) > 2))
-  
-    # Calculating the cross product of the covariate matrix and its transpose
-    tryCatch({
-      product_matrix <- cov_matrix %*% t(cov_matrix)
-    }, error = function(e) {
-      stop("Error: An error occurred while attempting to calculate the cross product of the covariate matrix and its transpose:", e)
-    })                       
-    # Selecting only lower triangular elements of the cross product matrix
-    lower_tri <- lower.tri(product_matrix)
-    product_matrix <- product_matrix[lower_tri]
+    # Calculating the product matrix of each combination of columns
+    k <- ncol(cov_matrix)
+    n <- nrow(cov_matrix)
+    product_matrix <- matrix(NA, n, (k*(k+1))/2 + 1)
+    colnames(product_matrix)[((k*(k+1))/2 + 1)] <- "dummy"
+    if (n * k > .Machine$integer.max) {
+       stop("Output matrix is too large to be computed")
+       }
+    count <- 1
+    for (i in 1:(k-1)) {
+        product_matrix[,count:(count+k-i-1)] <- outer(cov_matrix[,i], cov_matrix[, (i+1):k])
+        colnames(product_matrix)[count:(count+k-i-1)] <- paste0(colnames(cov_matrix)[i], ".", colnames(cov_matrix)[(i+1):k])
+        count <- count + k - i
+        }
+      
+    # Adding squared terms to output matrix
+    cov_matrix.sq <- apply(cov_matrix, 2, function(x) if (length(unique(x)) > 1) x^2 else NULL)
+    cov_matrix.sq <- cov_matrix.sq[, !is.null(cov_matrix.sq)]
+    cov_matrix.sq.names <- paste0(colnames(cov_matrix.sq), "^2")
     
-    # Calculating squares of the values in the identified columns
-    square_matrix <- cov_matrix[, indices]^2
-    colnames(square_matrix) <- paste0(colnames(cov_matrix)[indices], "^2")
-  
-    # Verifying that the square_matrix has at least one column
-    if (ncol(square_matrix) == 0) {
-      stop("Error: square_matrix must have at least one column.")
-    }
-  
-    # Combining the cross product matrix and the square matrix
-    tryCatch({
-      combined_matrix <- cbind(product_matrix, square_matrix)
-    }, error = function(e) {
-      stop("Error: An error occurred while attempting to bind product_matrix and square_matrix:", e)
-    })                          
-    # Combining the input matrix with the combined matrix
-    out <- cbind(cov_matrix, combined_matrix)
-    return(out)
+    # Combining the original matrix with the new matrices
+    out <- cbind(cov_matrix, product_matrix, cov_matrix.sq)
+    colnames(out)[(ncol(cov_matrix)+ncol(product_matrix)):ncol(out)] <- cov_matrix.sq.names
     
   # Lastly, handling invalid options
   } else {
