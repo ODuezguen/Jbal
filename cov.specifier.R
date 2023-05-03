@@ -1,9 +1,7 @@
-#' This function takes a matrix as input and returns a new matrix that has all of the original columns 
-#' plus additional columns containing the product of each combination of columns ("crossproduct") from the original columns 
-#' as well as the squares of the values ("square") or the combination of both ("combined"). Default is "crossproduct".
+#' The function allows the user to choose from three different options (crossproduct, square, or combined) 
+#' to specify the type of covariance matrix to be returned. Default is "crossproduct".
 #'
-#' It includes additional checks and error handling, 
-#' e.g new columns are added only for columns that have more than two unique values in the original matrix.
+#' The function now includes input validation to ensure that the covariate matrix is valid and suitable for analysis.
 #'
 #' @author Onur Düzgün
 
