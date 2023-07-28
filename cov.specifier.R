@@ -46,6 +46,11 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
      
     # Combining the original matrix with the new matrix
     out <- cbind(cov_matrix, product_matrix)
+
+    # Removing columns with all zero values
+    zero_cols <- apply(out, 2, function(x) all(x == 0))
+    out <- out[, !zero_cols]
+                       
     return(out)   
     
   # Option 2: Returns original matrix and squares of each column
@@ -58,6 +63,7 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     # Combining the original matrix with the new matrix
     out <- cbind(cov_matrix, cov_matrix.sq)
     colnames(out)[(ncol(cov_matrix)+1):ncol(out)] <- cov_matrix.sq.names
+                           
     return(out)
 
   # Option 3: Calculate combined matrix
@@ -85,6 +91,11 @@ cov.specifier <- function(cov_matrix, method = "crossproduct") {
     # Combining the original matrix with the new matrices
     out <- cbind(cov_matrix, product_matrix, cov_matrix.sq)
     colnames(out)[(ncol(cov_matrix)+ncol(product_matrix)):ncol(out)] <- cov_matrix.sq.names
+
+    # Removing columns with all zero values
+    zero_cols <- apply(out, 2, function(x) all(x == 0))
+    out <- out[, !zero_cols]
+    
     return(out)
     
   # Lastly, handling invalid options
