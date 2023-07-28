@@ -1,7 +1,8 @@
 #' The function allows the user to choose from three different options (crossproduct, square, or combined) 
 #' to specify the type of covariance matrix to be returned. Default is "crossproduct".
 #'
-#' The function now includes input validation to ensure that the covariate matrix is valid and suitable for analysis.
+#' The function now includes input validation to ensure that the covariate matrix is valid and suitable for analysis. 
+#' It is also able to remove unneccessary columns with only zero values that may be generated through two-way interactions.
 #'
 #' @author Onur Düzgün
 
